@@ -7,6 +7,7 @@ struct ForegroundAppView: View {
     @State private var foregroundApps: [(id: Int, app: String, timestamp: Date)] = []
     @State private var appObserver: NSObjectProtocol? = nil
     @State private var nextID: Int = 0
+    @State private var workstreamSpan: Span?
     @State private var foregroundSpan: Span?
 
     @EnvironmentObject private var telemetryTracer: TelemetryTracer
@@ -56,7 +57,7 @@ struct ForegroundAppView: View {
     fileprivate func onForegroundApp(_ appName: String) {
         foregroundSpan?.end()
         // TODO: should span vary name based on app (or static with an appName attribute)
-        foregroundSpan = telemetryTracer.startSpan("foreground-app")
+        foregroundSpan = telemetryTracer.startSpan("foreground-app", parent: workstreamSpan)
         foregroundSpan!.setAttribute(key: "appName", value: appName)
 
         // in memory UX
@@ -73,6 +74,7 @@ struct ForegroundAppView: View {
     private func startDetection() {
         isDetectionActive = true
         foregroundApps.removeAll()
+        workstreamSpan = telemetryTracer.startSpan("workstream")
         
         // Start detecting foreground apps and update the list
         appObserver = NSWorkspace.shared.notificationCenter.addObserver(forName: NSWorkspace.didActivateApplicationNotification, object: nil, queue: nil) { notification in
@@ -90,5 +92,7 @@ struct ForegroundAppView: View {
         isDetectionActive = false
         NSWorkspace.shared.notificationCenter.removeObserver(appObserver!, name: NSWorkspace.didActivateApplicationNotification, object: nil)
         appObserver = nil
+        workstreamSpan!.end()
+        workstreamSpan = nil
     }
 }

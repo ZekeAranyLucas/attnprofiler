@@ -47,10 +47,13 @@ class TelemetryTracer: ObservableObject {
             instrumentationVersion: instrumentationScopeVersion)
     }
 
-    func startSpan(_ name: String) -> Span {
+    func startSpan(_ name: String, parent: Span? = nil) -> Span {
         print("[TelemetryTracer.startSpan] \(name)")
-        return tracer.spanBuilder(spanName: name)
+        let builder = tracer.spanBuilder(spanName: name)
             .setSpanKind(spanKind: .client)
-            .startSpan()
+        if let parent = parent {
+            builder.setParent(parent)
+        }
+        return builder.startSpan()
     }
 }
