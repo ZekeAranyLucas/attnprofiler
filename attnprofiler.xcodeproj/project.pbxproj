@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		B316812B2A4EB7F3007FAF0A /* ForegroundAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B316812A2A4EB7F3007FAF0A /* ForegroundAppView.swift */; };
 		B32A168B2A4D78290069A796 /* attnprofilerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A168A2A4D78290069A796 /* attnprofilerApp.swift */; };
 		B32A168D2A4D78290069A796 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A168C2A4D78290069A796 /* ContentView.swift */; };
 		B32A168F2A4D782B0069A796 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B32A168E2A4D782B0069A796 /* Assets.xcassets */; };
@@ -34,6 +35,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		B316812A2A4EB7F3007FAF0A /* ForegroundAppView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ForegroundAppView.swift; sourceTree = "<group>"; };
 		B32A16872A4D78290069A796 /* attnprofiler.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = attnprofiler.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B32A168A2A4D78290069A796 /* attnprofilerApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = attnprofilerApp.swift; sourceTree = "<group>"; };
 		B32A168C2A4D78290069A796 /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -97,6 +99,7 @@
 			children = (
 				B32A168A2A4D78290069A796 /* attnprofilerApp.swift */,
 				B32A168C2A4D78290069A796 /* ContentView.swift */,
+				B316812A2A4EB7F3007FAF0A /* ForegroundAppView.swift */,
 				B32A168E2A4D782B0069A796 /* Assets.xcassets */,
 				B32A16932A4D782B0069A796 /* attnprofiler.entitlements */,
 				B32A16902A4D782B0069A796 /* Preview Content */,
@@ -261,6 +264,7 @@
 			files = (
 				B32A168D2A4D78290069A796 /* ContentView.swift in Sources */,
 				B32A168B2A4D78290069A796 /* attnprofilerApp.swift in Sources */,
+				B316812B2A4EB7F3007FAF0A /* ForegroundAppView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
