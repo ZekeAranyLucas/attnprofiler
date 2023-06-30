@@ -1,4 +1,5 @@
 import SwiftUI
+import OpenTelemetryApi
 import Cocoa
 
 struct ForegroundAppView: View {
@@ -6,6 +7,7 @@ struct ForegroundAppView: View {
     @State private var foregroundApps: [(id: Int, app: String, timestamp: Date)] = []
     @State private var appObserver: NSObjectProtocol? = nil
     @State private var nextID: Int = 0
+    @State private var foregroundSpan: Span?
 
     @EnvironmentObject private var telemetryTracer: TelemetryTracer
 
@@ -52,7 +54,12 @@ struct ForegroundAppView: View {
     }
     
     fileprivate func onForegroundApp(_ appName: String) {
-        telemetryTracer.trace(appName)
+        foregroundSpan?.end()
+        // TODO: should span vary name based on app (or static with an appName attribute)
+        foregroundSpan = telemetryTracer.startSpan("foreground-app")
+        foregroundSpan!.setAttribute(key: "appName", value: appName)
+
+        // in memory UX
         nextID += 1
         let entry = (id: nextID, app: appName, timestamp: Date())
         foregroundApps.append(entry)

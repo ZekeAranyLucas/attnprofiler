@@ -9,6 +9,7 @@
 /* Begin PBXBuildFile section */
 		B316812B2A4EB7F3007FAF0A /* ForegroundAppView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B316812A2A4EB7F3007FAF0A /* ForegroundAppView.swift */; };
 		B316812E2A4EC413007FAF0A /* OpenTelemetrySdk in Frameworks */ = {isa = PBXBuildFile; productRef = B316812D2A4EC413007FAF0A /* OpenTelemetrySdk */; };
+		B31681312A4ED5E2007FAF0A /* StdoutExporter in Frameworks */ = {isa = PBXBuildFile; productRef = B31681302A4ED5E2007FAF0A /* StdoutExporter */; };
 		B32A168B2A4D78290069A796 /* attnprofilerApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A168A2A4D78290069A796 /* attnprofilerApp.swift */; };
 		B32A168D2A4D78290069A796 /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B32A168C2A4D78290069A796 /* ContentView.swift */; };
 		B32A168F2A4D782B0069A796 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B32A168E2A4D782B0069A796 /* Assets.xcassets */; };
@@ -55,6 +56,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				B31681312A4ED5E2007FAF0A /* StdoutExporter in Frameworks */,
 				B316812E2A4EC413007FAF0A /* OpenTelemetrySdk in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -76,6 +78,13 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		B316812F2A4ED5E2007FAF0A /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B32A167E2A4D78290069A796 = {
 			isa = PBXGroup;
 			children = (
@@ -83,6 +92,7 @@
 				B32A169B2A4D782B0069A796 /* attnprofilerTests */,
 				B32A16A52A4D782B0069A796 /* attnprofilerUITests */,
 				B32A16882A4D78290069A796 /* Products */,
+				B316812F2A4ED5E2007FAF0A /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -152,6 +162,7 @@
 			name = attnprofiler;
 			packageProductDependencies = (
 				B316812D2A4EC413007FAF0A /* OpenTelemetrySdk */,
+				B31681302A4ED5E2007FAF0A /* StdoutExporter */,
 			);
 			productName = attnprofiler;
 			productReference = B32A16872A4D78290069A796 /* attnprofiler.app */;
@@ -605,6 +616,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B316812C2A4EC413007FAF0A /* XCRemoteSwiftPackageReference "opentelemetry-swift" */;
 			productName = OpenTelemetrySdk;
+		};
+		B31681302A4ED5E2007FAF0A /* StdoutExporter */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B316812C2A4EC413007FAF0A /* XCRemoteSwiftPackageReference "opentelemetry-swift" */;
+			productName = StdoutExporter;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};

@@ -6,6 +6,10 @@
 //
 
 import SwiftUI
+import OpenTelemetryApi
+import OpenTelemetrySdk
+import StdoutExporter
+
 
 @main
 struct attnprofilerApp: App {
@@ -21,13 +25,32 @@ struct attnprofilerApp: App {
 }
 
 class TelemetryTracer: ObservableObject {
-
+    let instrumentationScopeName = "attnprofiler"
+    let instrumentationScopeVersion = "semver:0.1.0"
+    let tracer : Tracer
+    
     init() {
-        // Initialize your telemetry tracing object here
-        // ...
+
+        // TODO: let otlpTraceExporter = OtlpTraceExporter(channel: client)
+        let stdoutExporter = StdoutExporter()
+        let spanExporter = MultiSpanExporter(spanExporters: [stdoutExporter])
+        
+        let spanProcessor = SimpleSpanProcessor(spanExporter: spanExporter)
+        OpenTelemetry.registerTracerProvider(tracerProvider:
+            TracerProviderBuilder()
+                .add(spanProcessor: spanProcessor)
+                .build()
+        )
+
+        self.tracer = OpenTelemetry.instance.tracerProvider.get(
+            instrumentationName: instrumentationScopeName,
+            instrumentationVersion: instrumentationScopeVersion)
     }
 
-    func trace(_ message: String) {
-        print("[TelemetryTracer] \(message)")
+    func startSpan(_ name: String) -> Span {
+        print("[TelemetryTracer.startSpan] \(name)")
+        return tracer.spanBuilder(spanName: name)
+            .setSpanKind(spanKind: .client)
+            .startSpan()
     }
 }
