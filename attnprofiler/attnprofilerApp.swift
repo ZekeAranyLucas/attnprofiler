@@ -6,9 +6,14 @@
 //
 
 import SwiftUI
+import GRPC
+import NIO
 import OpenTelemetryApi
+import OpenTelemetryProtocolExporterCommon
+import OpenTelemetryProtocolExporterGrpc
 import OpenTelemetrySdk
 import StdoutExporter
+import ResourceExtension
 
 
 @main
@@ -31,14 +36,27 @@ class TelemetryTracer: ObservableObject {
     
     init() {
 
-        // TODO: let otlpTraceExporter = OtlpTraceExporter(channel: client)
+        //  traces sent to collector for storage and exploration
+        let otlpConfiguration = OtlpConfiguration(timeout: OtlpConfiguration.DefaultTimeoutInterval)
+        let configuration = ClientConnection.Configuration.default(
+            target: .hostAndPort("localhost", 4317),
+            eventLoopGroup: MultiThreadedEventLoopGroup(numberOfThreads: 1)
+        )
+        let client = ClientConnection(configuration: configuration)
+
+        let traceExporter = OtlpTraceExporter(channel: client, config: otlpConfiguration)
+        
+        //  traces sent to console for debugging
         let stdoutExporter = StdoutExporter()
-        let spanExporter = MultiSpanExporter(spanExporters: [stdoutExporter])
+
+        let spanExporter = MultiSpanExporter(spanExporters: [traceExporter, stdoutExporter])
+
         
         let spanProcessor = SimpleSpanProcessor(spanExporter: spanExporter)
         OpenTelemetry.registerTracerProvider(tracerProvider:
             TracerProviderBuilder()
                 .add(spanProcessor: spanProcessor)
+                .with(resource: DefaultResources().get())
                 .build()
         )
 
@@ -49,6 +67,7 @@ class TelemetryTracer: ObservableObject {
 
     func startSpan(_ name: String, parent: Span? = nil) -> Span {
         print("[TelemetryTracer.startSpan] \(name)")
+        
         let builder = tracer.spanBuilder(spanName: name)
             .setSpanKind(spanKind: .client)
         if let parent = parent {
