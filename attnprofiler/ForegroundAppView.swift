@@ -7,6 +7,8 @@ struct ForegroundAppView: View {
     @State private var appObserver: NSObjectProtocol? = nil
     @State private var nextID: Int = 0
 
+    @EnvironmentObject private var telemetryTracer: TelemetryTracer
+
 
     var body: some View {
         VStack {
@@ -49,6 +51,18 @@ struct ForegroundAppView: View {
         return dateFormatter.string(from: timestamp)
     }
     
+    fileprivate func onForegroundApp(_ appName: String) {
+        telemetryTracer.trace(appName)
+        nextID += 1
+        let entry = (id: nextID, app: appName, timestamp: Date())
+        foregroundApps.append(entry)
+        
+        // Keep only the last 10 apps in the list
+        if foregroundApps.count > 10 {
+            foregroundApps.removeFirst()
+        }
+    }
+    
     private func startDetection() {
         isDetectionActive = true
         foregroundApps.removeAll()
@@ -58,14 +72,7 @@ struct ForegroundAppView: View {
             if let activatedApp = notification.userInfo?[NSWorkspace.applicationUserInfoKey] as? NSRunningApplication,
                let appName = activatedApp.localizedName {
                 DispatchQueue.main.async {
-                    nextID += 1
-                    let entry = (id: nextID, app: appName, timestamp: Date())
-                    foregroundApps.append(entry)
-                    
-                    // Keep only the last 10 apps in the list
-                    if foregroundApps.count > 10 {
-                        foregroundApps.removeFirst()
-                    }
+                    onForegroundApp(appName)
                 }
             }
         }
